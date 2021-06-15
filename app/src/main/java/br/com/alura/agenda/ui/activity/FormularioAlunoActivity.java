@@ -9,8 +9,9 @@ import android.widget.EditText;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
-import br.com.alura.agenda.DAO.AlunoDAO;
 import br.com.alura.agenda.R;
+import br.com.alura.agenda.database.AgendaDatabase;
+import br.com.alura.agenda.database.dao.RoomAlunoDAO;
 import br.com.alura.agenda.model.Aluno;
 
 import static br.com.alura.agenda.ui.activity.ConstantesActivities.CHAVE_ALUNO;
@@ -20,15 +21,18 @@ public class FormularioAlunoActivity extends AppCompatActivity {
     private static final String TITULO_APPBAR_NOVO_ALUNO = "Novo aluno";
     private static final String TITULO_APPBAR_EDITA_ALUNO = "Edita Aluno";
     private EditText campoNome;
-    private EditText campoTelefone;
+    private EditText campoTelefoneFixo;
+    private EditText campoTelefoneCelular;
     private EditText campoEmail;
-    final AlunoDAO dao = new AlunoDAO();
+    private RoomAlunoDAO dao;
     private Aluno aluno;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_formulario_aluno);
+        AgendaDatabase database = AgendaDatabase.getInstance(this);
+        dao = database.getRoomAlunoDAO();
         inicializacaoDosCampos();
         carregaAluno();
     }
@@ -62,7 +66,8 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
     private void preencheCampos() {
         campoNome.setText(aluno.getNome());
-        campoTelefone.setText(aluno.getTelefone());
+//        campoTelefoneFixo.setText(aluno.getTelefoneFixo());
+//        campoTelefoneCelular.setText(aluno.getTelefoneCelular());
         campoEmail.setText(aluno.getEmail());
     }
 
@@ -78,16 +83,19 @@ public class FormularioAlunoActivity extends AppCompatActivity {
 
     private void inicializacaoDosCampos() {
         campoNome = findViewById(R.id.activity_formulario_aluno_nome);
-        campoTelefone = findViewById(R.id.activity_formulario_aluno_telefone);
+        campoTelefoneFixo = findViewById(R.id.activity_formulario_aluno_telefone_fixo);
+        campoTelefoneCelular = findViewById(R.id.activity_formulario_aluno_telefone_celular);
         campoEmail = findViewById(R.id.activity_formulario_aluno_email);
     }
 
     private void preencheAluno() {
         String nome = campoNome.getText().toString();
-        String telefone = campoTelefone.getText().toString();
+        String telefoneFixo = campoTelefoneFixo.getText().toString();
+        String telefoneCelular = campoTelefoneCelular.getText().toString();
         String email = campoEmail.getText().toString();
         aluno.setNome(nome);
-        aluno.setTelefone(telefone);
+//        aluno.setTelefoneFixo(telefoneFixo);
+//        aluno.setTelefoneCelular(telefoneCelular);
         aluno.setEmail(email);
     }
 
